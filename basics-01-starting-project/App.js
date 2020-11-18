@@ -15,15 +15,24 @@ export default function App() {
     ]);
     changeModalVisibility(false);
   };
+
   const removeGoalHandler = goalId => {
     updateCourseGoals(currentGoals=> {
       return currentGoals.filter((goal) => goal.uid !== goalId)
     })
   };
+
+  const cancelGoalAddHandler = () => {
+    changeModalVisibility(false);
+  }
   return (
     <View style={styles.screen}>
       <Button title="Add Goal" onPress={() => changeModalVisibility(true)}/>
-      <GoalInput onAddGoal={addGoalHandler} isVisible={modalVisibility}/>
+      <GoalInput 
+        onAddGoal={addGoalHandler} 
+        onCancel={cancelGoalAddHandler} 
+        isVisible={modalVisibility}
+      />
       <FlatList 
         keyExtractor={(item, index) => item.uid}
         data={courseGoals}

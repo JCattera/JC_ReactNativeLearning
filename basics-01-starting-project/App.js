@@ -6,9 +6,12 @@ import GoalInput from './components/GoalInput';
 export default function App() {
   const [courseGoals, updateCourseGoals] = useState([]);
   const [modalVisibility, changeModalVisibility] = useState(false);
-
+  
   const addGoalHandler = (newGoalTxt) => {
     //updateCourseGoals([...courseGoals,enteredGoal]) // not ideal if we want 100% up-to-date
+    if(newGoalTxt.length === 0){
+      return;
+    }
     updateCourseGoals(currentGoals => [
       ...currentGoals, 
       { uid: Math.random().toString(), value: newGoalTxt}

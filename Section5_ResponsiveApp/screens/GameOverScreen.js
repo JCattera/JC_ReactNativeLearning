@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import { View, Text, StyleSheet, Button, Image, Dimensions, ScrollView } from 'react-native';
 
 import BodyText from '../components/BodyText';

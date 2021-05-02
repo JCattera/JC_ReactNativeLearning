@@ -5,7 +5,7 @@ const MealDetailScreen = props => {
     return (
         <View style={styles.screen}>
             <Text>The Meal Detail Screen!</Text>
-            <Button text="Go To Categories" onPress={() => {
+            <Button title="Go To Categories" onPress={() => {
                 props.navigation.popToTop();
             }
             }></Button>

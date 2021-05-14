@@ -2,13 +2,9 @@ import React from 'react';
 import {
   View,
   Text,
-  Button,
   StyleSheet,
-  FlatList,
   TouchableOpacity,
   ImageBackground,
-  Platform,
-  TouchableNativeFeedback,
 } from 'react-native';
 
 const MealItem = (props) => {
@@ -21,11 +17,15 @@ const MealItem = (props) => {
               source={{ uri: props.image }}
               style={styles.bgImage}
             >
-              <Text style={styles.title}>{props.title}</Text>
+              <View style={styles.titleContainer}>
+                <Text style={styles.title} numberOfLines={1}>
+                  {props.title}
+                </Text>
+              </View>
             </ImageBackground>
           </View>
           <View style={{ ...styles.mealRow, ...styles.mealDetail }}>
-            <Text>{props.duration} </Text>
+            <Text>{props.duration}m</Text>
             <Text>{props.complexity.toUpperCase()}</Text>
             <Text>{props.affordability.toUpperCase()}</Text>
           </View>
@@ -39,31 +39,38 @@ const styles = StyleSheet.create({
   mealItem: {
     height: 200,
     width: '100%',
-    backgroundColor: '#ccc',
-  },
-  mealRow: {
-    flexDirection: 'row',
-  },
-  mealHeader: {
-    height: '80%',
-  },
-  mealDetail: {
-    height: '20%',
-    paddingHorizontal: 10,
-    justifyContent: 'space-between',
+    backgroundColor: '#f5f5f5',
+    borderRadius: 10,
+    overflow: 'hidden',
+    marginVertical: 10,
   },
   bgImage: {
     width: '100%',
     height: '100%',
     justifyContent: 'flex-end', //move text to bottom
   },
+  mealRow: {
+    flexDirection: 'row',
+  },
+  mealHeader: {
+    height: '85%',
+  },
+  mealDetail: {
+    height: '15%',
+    paddingHorizontal: 10,
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  titleContainer: {
+    backgroundColor: 'rgba(0,0,0,0.5)',
+    paddingVertical: 5,
+    paddingHorizontal: 12,
+  },
   title: {
     fontFamily: 'open-sans-bold',
     fontSize: 22,
     color: 'white',
-    backgroundColor: 'rgba(0,0,0,0.5)',
-    paddingVertical: 5,
-    paddingHorizontal: 12,
+    textAlign: 'center',
   },
 });
 

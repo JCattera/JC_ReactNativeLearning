@@ -36,7 +36,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     borderRadius: 15,
     overflow:
-      Platform.OS === 'android' && Platform.Version > 21 ? 'hidden' : '',
+      Platform.OS === 'android' && Platform.Version > 21 ? 'hidden' : 'visible',
     elevation: 5,
   },
   container: {

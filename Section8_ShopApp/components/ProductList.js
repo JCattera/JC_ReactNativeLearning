@@ -1,9 +1,15 @@
 import React from 'react';
 import { View, StyleSheet, Text, FlatList } from 'react-native';
-
+import ProductItem from './ProductItem';
 const ProductList = (props) => {
   const renderProductItem = (itemData) => {
-    return <Text>{itemData.item.title}</Text>;
+    return (
+      <ProductItem
+        title={itemData.item.title}
+        price={itemData.item.price}
+        imageUrl={itemData.item.imageUrl}
+      ></ProductItem>
+    );
   };
   return (
     <View style={styles.list}>

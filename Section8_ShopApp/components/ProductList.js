@@ -8,6 +8,16 @@ const ProductList = (props) => {
         title={itemData.item.title}
         price={itemData.item.price}
         imageUrl={itemData.item.imageUrl}
+        onViewDetails={()=>{
+          props.navigateFunction({
+            routeName='ProductDetails', 
+            params:{
+              productId: itemData.item.id,
+              productTitle: itemData.item.title
+            }
+          })
+        }}
+        onAddToCart={}
       ></ProductItem>
     );
   };

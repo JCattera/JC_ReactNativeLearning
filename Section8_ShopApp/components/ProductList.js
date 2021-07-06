@@ -8,16 +8,16 @@ const ProductList = (props) => {
         title={itemData.item.title}
         price={itemData.item.price}
         imageUrl={itemData.item.imageUrl}
-        onViewDetails={()=>{
+        onViewDetails={() => {
           props.navigateFunction({
-            routeName='ProductDetails', 
-            params:{
+            routeName: 'ProductDetails',
+            params: {
               productId: itemData.item.id,
-              productTitle: itemData.item.title
-            }
-          })
+              productTitle: itemData.item.title,
+            },
+          });
         }}
-        onAddToCart={}
+        onAddToCart={() => {}}
       ></ProductItem>
     );
   };
@@ -35,10 +35,10 @@ const ProductList = (props) => {
 
 const styles = StyleSheet.create({
   list: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    padding: 15,
+    // flex: 1,
+    // justifyContent: 'center',
+    // alignItems: 'center',
+    // padding: 15,
   },
 });
 

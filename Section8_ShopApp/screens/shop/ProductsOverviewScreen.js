@@ -1,7 +1,7 @@
 import React from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, Platform } from 'react-native';
 import { useSelector } from 'react-redux';
-import ProductList from '../../components/ProductList';
+import ProductList from '../../components/shop/ProductList';
 import { HeaderButtons, Item } from 'react-navigation-header-buttons';
 import HeaderButton from '../../components/UI/HeaderButton';
 const ProductsOverviewScreen = (props) => {

@@ -9,8 +9,8 @@ import {
   TouchableNativeFeedback,
   Platform,
 } from 'react-native';
-import Colors from '../constants/Colors';
-import DefaultText from './DefaultText';
+import Colors from '../../constants/Colors';
+import DefaultText from '../DefaultText';
 
 const ProductItem = (props) => {
   let TouchableComponent = TouchableOpacity;
@@ -58,8 +58,8 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.26,
     backgroundColor: 'white',
     elevation: 5,
-    margin: 20,
     borderRadius: 10,
+    margin: 20,
     height: 300,
   },
   touchable: {

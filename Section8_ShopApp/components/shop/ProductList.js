@@ -2,7 +2,7 @@ import React from 'react';
 import { useDispatch } from 'react-redux';
 import { View, StyleSheet, Text, FlatList } from 'react-native';
 import ProductItem from './ProductItem';
-import * as cartActions from '../store/actions/cart';
+import * as cartActions from '../../store/actions/cart';
 const ProductList = (props) => {
   const dispatch = useDispatch();
   const renderProductItem = (itemData) => {

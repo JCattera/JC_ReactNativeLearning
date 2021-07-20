@@ -1,7 +1,7 @@
 import {
   ADD_TO_CART,
-  REMOVE_FROM_CART,
   CLEAR_CART_ITEM,
+  CHANGE_CART_ITEM_QUANTITY,
 } from '../actions/cart';
 import CartItem from '../../models/cart-item';
 const initialState = {
@@ -34,21 +34,40 @@ export default (state = initialState, action) => {
 
     case CLEAR_CART_ITEM:
       const currentCartItems = { ...state.cartItems };
-      if (state.cartItems[action.id]) {
-        priceSubtracted = state.cartItems[action.id].sumTotal;
-        delete currentCartItems[action.id];
-        return {
-          ...state,
-          cartItems: currentCartItems,
-          totalCartAmount: state.totalCartAmount - priceSubtracted,
-        };
+      const priceSubtracted = currentCartItems[action.itemId].sumTotal;
+      delete currentCartItems[action.itemId];
+      return {
+        ...state,
+        cartItems: currentCartItems,
+        totalCartAmount: state.totalCartAmount - priceSubtracted,
+      };
+
+    case CHANGE_CART_ITEM_QUANTITY:
+      const selectedItem = state.cartItems[action.itemId];
+      const currentQty = selectedItem.quantity;
+      const increment = action.increment;
+      let updatedItems;
+      if (currentQty > 1 || increment) {
+        const updatedItem = new CartItem(
+          currentQty + (increment ? 1 : -1),
+          selectedItem.productPrice,
+          selectedItem.productTitle,
+          selectedItem.sumTotal +
+            (increment ? 1 : -1) * selectedItem.productPrice
+        );
+        updatedItems = { ...state.cartItems, [action.itemId]: updatedItem };
       } else {
-        return state;
+        updatedItems = { ...state.cartItems };
+        delete updatedItems[action.itemId];
       }
-    // case REMOVE_FROM_CART:
-    //   const currentCartItems = { ...state.cartItems };
-    //   const priceSubtracted = state.cartItems[action.id].price;
-    //   return state;
+      return {
+        ...state,
+        cartItems: updatedItems,
+        totalCartAmount: Math.abs(
+          state.totalCartAmount +
+            (increment ? 1 : -1) * selectedItem.productPrice
+        ),
+      };
   }
   return state;
 };

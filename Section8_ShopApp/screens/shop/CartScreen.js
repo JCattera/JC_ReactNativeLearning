@@ -1,23 +1,36 @@
 import React, { useEffect } from 'react';
 import { View, Text, FlatList, StyleSheet, Button } from 'react-native';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import Colors from '../../constants/Colors';
 import CartItem from '../../components/shop/CartItem';
+import * as cartActions from '../../store/actions/cart';
 const CartScreen = (props) => {
   const totalCartAmount = useSelector((state) => state.cart.totalCartAmount);
   const cartItems = useSelector((state) => {
-    return Object.entries(state.cart.cartItems).map((x) => {
-      const i = x[1];
-      i['id'] = x[0];
-      return i;
-    });
+    return Object.entries(state.cart.cartItems)
+      .map((x) => {
+        const i = x[1];
+        i['id'] = x[0];
+        return i;
+      })
+      .sort((a, b) => (a.id > b.id ? 1 : -1)); // to ensure they're sorted by id
   });
+  const dispatch = useDispatch();
   const renderCartItem = (itemData) => {
     return (
       <CartItem
         title={itemData.item.productTitle}
         price={itemData.item.sumTotal}
         quantity={itemData.item.quantity}
+        onIncrement={() => {
+          dispatch(cartActions.changeCartItemQuantity(itemData.item.id, true));
+        }}
+        onDecrement={() => {
+          dispatch(cartActions.changeCartItemQuantity(itemData.item.id, false));
+        }}
+        onDeleteItem={() => {
+          dispatch(cartActions.clearCartItem(itemData.item.id));
+        }}
       />
     );
   };
@@ -37,14 +50,13 @@ const CartScreen = (props) => {
           disabled={cartItems.length === 0}
         />
       </View>
-      <View>
-        <FlatList
-          data={cartItems}
-          keyExtractor={(item, index) => item.id}
-          renderItem={renderCartItem}
-          style={{ width: '100%' }}
-        />
-      </View>
+
+      <FlatList
+        data={cartItems}
+        keyExtractor={(item, index) => item.id}
+        renderItem={renderCartItem}
+        style={{ width: '100%' }}
+      />
     </View>
   );
 };

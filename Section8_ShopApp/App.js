@@ -6,6 +6,7 @@ import { Provider } from 'react-redux';
 import { enableScreens } from 'react-native-screens';
 import productsReducer from './store/reducers/products';
 import cartReducer from './store/reducers/cart';
+import orderReducer from './store/reducers/order';
 import ShopNavigator from './navigation/ShopNavigator';
 import * as Font from 'expo-font';
 import AppLoading from 'expo-app-loading';
@@ -14,6 +15,7 @@ enableScreens();
 const rootReducer = combineReducers({
   products: productsReducer,
   cart: cartReducer,
+  orders: orderReducer,
 });
 
 const store = createStore(rootReducer);

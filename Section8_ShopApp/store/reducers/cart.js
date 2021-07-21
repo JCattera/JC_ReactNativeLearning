@@ -4,6 +4,7 @@ import {
   CHANGE_CART_ITEM_QUANTITY,
 } from '../actions/cart';
 import CartItem from '../../models/cart-item';
+import { ADD_ORDER } from '../actions/order';
 const initialState = {
   cartItems: {},
   totalCartAmount: 0,
@@ -41,7 +42,8 @@ export default (state = initialState, action) => {
         cartItems: currentCartItems,
         totalCartAmount: state.totalCartAmount - priceSubtracted,
       };
-
+    case ADD_ORDER:
+      return initialState;
     case CHANGE_CART_ITEM_QUANTITY:
       const selectedItem = state.cartItems[action.itemId];
       const currentQty = selectedItem.quantity;

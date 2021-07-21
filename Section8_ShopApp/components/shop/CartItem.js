@@ -60,7 +60,7 @@ const styles = StyleSheet.create({
   },
   quantity: {
     fontFamily: 'open-sans',
-    color: '#444',
+    color: '#888',
     fontSize: 16,
   },
   mainText: {

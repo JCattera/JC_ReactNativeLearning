@@ -23,6 +23,7 @@ const CartScreen = (props) => {
         title={itemData.item.productTitle}
         price={itemData.item.sumTotal}
         quantity={itemData.item.quantity}
+        inCart={true}
         onIncrement={() => {
           dispatch(cartActions.changeCartItemQuantity(itemData.item.id, true));
         }}

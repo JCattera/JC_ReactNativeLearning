@@ -1,14 +1,14 @@
 import dayjs from 'dayjs';
-import * as advancedFormat from 'dayjs/plugin/advancedFormat';
+import advancedFormat from 'dayjs/plugin/advancedFormat';
 class Order {
   constructor(id, items, amount, date) {
+    dayjs.extend(advancedFormat);
     this.id = id;
     this.items = items;
     this.amount = amount;
     this.date = date;
   }
   get readableDate() {
-    dayjs.extend(advancedFormat);
     return dayjs(this.date).format('MMMM Do YYYY, hh:mm');
   }
 }

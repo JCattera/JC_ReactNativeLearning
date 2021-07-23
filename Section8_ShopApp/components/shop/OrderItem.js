@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   View,
   StyleSheet,
@@ -10,14 +10,35 @@ import {
 import Colors from '../../constants/Colors';
 
 import CartItem from './CartItem';
+
 const OrderItem = (props) => {
+  const [showDetails, setShowDetails] = useState(false);
+
   return (
     <View style={styles.orderItem}>
       <View style={styles.summary}>
         <Text style={styles.totalAmount}>${props.amount.toFixed(2)}</Text>
         <Text style={styles.date}>{props.date}</Text>
       </View>
-      <Button color={Colors.primaryColor} title="Show Details" />
+      <Button
+        color={Colors.primaryColor}
+        title={showDetails ? 'Hide Details' : 'Show Details'}
+        onPress={() => {
+          setShowDetails((prevState) => !prevState);
+        }}
+      />
+      {showDetails && (
+        <View style={styles.itemDetails}>
+          {props.items.map((itemData) => (
+            <CartItem
+              key={itemData.id}
+              quantity={itemData.quantity}
+              price={itemData.productPrice}
+              title={itemData.productTitle}
+            />
+          ))}
+        </View>
+      )}
     </View>
   );
 };
@@ -26,7 +47,7 @@ const styles = StyleSheet.create({
   orderItem: {
     shadowColor: 'black',
     shadowOffset: { height: 2, width: 0 },
-    shadowRadius: 6,
+    shadowRadius: 8,
     shadowOpacity: 0.26,
     backgroundColor: 'white',
     elevation: 5,
@@ -40,12 +61,13 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     width: '100%',
-    margin: 15,
+    marginBottom: 15,
   },
   totalAmount: {
     fontFamily: 'open-sans-bold',
     fontSize: 16,
   },
   date: { fontFamily: 'open-sans', color: '#888', fontSize: 16 },
+  itemDetails: { width: '100%' },
 });
 export default OrderItem;

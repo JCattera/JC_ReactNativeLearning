@@ -14,29 +14,33 @@ const CartItem = (props) => {
   return (
     <View style={styles.cartItem}>
       <View style={styles.itemData}>
-        <View style={styles.quickAddRemove}>
-          <TouchableOpacity onPress={props.onIncrement}>
-            <Ionicons name="chevron-up-outline" size={14} />
-          </TouchableOpacity>
-          <TouchableOpacity onPress={props.onDecrement}>
-            <Ionicons name="chevron-down-outline" size={14} />
-          </TouchableOpacity>
-        </View>
+        {props.inCart && (
+          <View style={styles.quickAddRemove}>
+            <TouchableOpacity onPress={props.onIncrement}>
+              <Ionicons name="chevron-up-outline" size={14} />
+            </TouchableOpacity>
+            <TouchableOpacity onPress={props.onDecrement}>
+              <Ionicons name="chevron-down-outline" size={14} />
+            </TouchableOpacity>
+          </View>
+        )}
         <Text style={styles.quantity}>{props.quantity}</Text>
         <Text style={styles.mainText}> {props.title}</Text>
       </View>
       <View style={styles.itemData}>
         <Text style={styles.mainText}>${Math.abs(props.price).toFixed(2)}</Text>
-        <TouchableOpacity
-          onPress={props.onDeleteItem}
-          style={styles.deleteButton}
-        >
-          <Ionicons
-            name={Platform.OS === 'android' ? 'md-trash' : 'ios-trash'}
-            size={23}
-            color="red"
-          />
-        </TouchableOpacity>
+        {props.inCart && (
+          <TouchableOpacity
+            onPress={props.onDeleteItem}
+            style={styles.deleteButton}
+          >
+            <Ionicons
+              name={Platform.OS === 'android' ? 'md-trash' : 'ios-trash'}
+              size={23}
+              color="red"
+            />
+          </TouchableOpacity>
+        )}
       </View>
     </View>
   );

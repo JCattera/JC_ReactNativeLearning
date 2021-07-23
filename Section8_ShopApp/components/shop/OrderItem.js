@@ -40,6 +40,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     width: '100%',
+    margin: 15,
   },
   totalAmount: {
     fontFamily: 'open-sans-bold',

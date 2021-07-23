@@ -1,3 +1,5 @@
+import dayjs from 'dayjs';
+import * as advancedFormat from 'dayjs/plugin/advancedFormat';
 class Order {
   constructor(id, items, amount, date) {
     this.id = id;
@@ -6,13 +8,8 @@ class Order {
     this.date = date;
   }
   get readableDate() {
-    return this.date.toLocaleDateString('en-EN', {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit',
-    });
+    dayjs.extend(advancedFormat);
+    return dayjs(this.date).format('MMMM Do YYYY, hh:mm');
   }
 }
 export default Order;

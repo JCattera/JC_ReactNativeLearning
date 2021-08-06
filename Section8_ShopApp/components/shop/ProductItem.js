@@ -32,16 +32,20 @@ const ProductItem = (props) => {
               </DefaultText>
             </View>
             <View style={styles.buttonView}>
-              <Button
-                color={Colors.primaryColor}
-                title="View Details"
-                onPress={props.onViewDetails}
-              />
-              <Button
-                color={Colors.accentColor}
-                title="Add to cart"
-                onPress={props.onAddToCart}
-              />
+              {props.isShopScreen && (
+                <Button
+                  color={Colors.primaryColor}
+                  title="View Details"
+                  onPress={props.onViewDetails}
+                />
+              )}
+              {props.isShopScreen && (
+                <Button
+                  color={Colors.accentColor}
+                  title="Add to cart"
+                  onPress={props.onAddToCart}
+                />
+              )}
             </View>
           </View>
         </TouchableComponent>

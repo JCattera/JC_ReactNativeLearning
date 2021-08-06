@@ -1,17 +1,45 @@
 import React from 'react';
-import { View, StyleSheet, Platform } from 'react-native';
-import { useSelector } from 'react-redux';
-import ProductList from '../../components/shop/ProductList';
+import { Platform, FlatList } from 'react-native';
+import { useSelector, useDispatch } from 'react-redux';
 import { HeaderButtons, Item } from 'react-navigation-header-buttons';
+
 import HeaderButton from '../../components/UI/HeaderButton';
+import ProductItem from '../../components/shop/ProductItem';
+import * as cartActions from '../../store/actions/cart';
+
 const ProductsOverviewScreen = (props) => {
   const availableProducts = useSelector(
     (state) => state.products.availableProducts
   );
+  const dispatch = useDispatch();
+  const renderProductItem = (itemData) => {
+    return (
+      <ProductItem
+        title={itemData.item.title}
+        price={itemData.item.price}
+        imageUrl={itemData.item.imageUrl}
+        onViewDetails={() => {
+          props.navigation.navigate({
+            routeName: 'ProductDetails',
+            params: {
+              productId: itemData.item.id,
+              productTitle: itemData.item.title,
+            },
+          });
+        }}
+        onAddToCart={() => {
+          dispatch(cartActions.addToCart(itemData.item));
+        }}
+        isShopScreen={true}
+      ></ProductItem>
+    );
+  };
   return (
-    <ProductList
-      displayedProducts={availableProducts}
-      navigateFunction={props.navigation.navigate}
+    <FlatList
+      data={availableProducts}
+      keyExtractor={(item) => item.id}
+      renderItem={renderProductItem}
+      style={{ width: '100%' }}
     />
   );
 };
@@ -47,6 +75,5 @@ ProductsOverviewScreen.navigationOptions = (navData) => {
     },
   };
 };
-const styles = StyleSheet.create({});
 
 export default ProductsOverviewScreen;

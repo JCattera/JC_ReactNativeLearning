@@ -1,7 +1,7 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
 import { View, StyleSheet, Text, FlatList } from 'react-native';
-import ProductItem from './ProductItem';
+import ProductItem from './ProductItem'
 import * as cartActions from '../../store/actions/cart';
 const ProductList = (props) => {
   const dispatch = useDispatch();
@@ -27,24 +27,15 @@ const ProductList = (props) => {
     );
   };
   return (
-    <View style={styles.list}>
+    <View>
       <FlatList
         data={props.displayedProducts}
-        keyExtractor={(item, index) => item.id}
+        keyExtractor={(item) => item.id}
         renderItem={renderProductItem}
         style={{ width: '100%' }}
       />
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  list: {
-    // flex: 1,
-    // justifyContent: 'center',
-    // alignItems: 'center',
-    // padding: 15,
-  },
-});
 
 export default ProductList;

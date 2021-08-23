@@ -10,14 +10,14 @@ import {
 } from 'react-native';
 
 import DefaultText from '../DefaultText';
-
+import Card from '../UI/Card';
 const ProductItem = (props) => {
   let TouchableComponent = TouchableOpacity;
   if (Platform.OS == 'android' && Platform.Version > 21) {
     TouchableComponent = TouchableNativeFeedback;
   }
   return (
-    <View style={styles.product}>
+    <Card style={styles.product}>
       <View style={styles.touchable}>
         <TouchableComponent onPress={props.onSelect} useForeground={true}>
           <View>
@@ -34,19 +34,12 @@ const ProductItem = (props) => {
           </View>
         </TouchableComponent>
       </View>
-    </View>
+    </Card>
   );
 };
 
 const styles = StyleSheet.create({
   product: {
-    shadowColor: 'black',
-    shadowOffset: { height: 2, width: 0 },
-    shadowRadius: 6,
-    shadowOpacity: 0.26,
-    backgroundColor: 'white',
-    elevation: 5,
-    borderRadius: 10,
     margin: 20,
     height: 300,
   },
@@ -71,7 +64,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    height: '25%',
+    height: '23%',
     paddingHorizontal: 20,
   },
   productInfo: {

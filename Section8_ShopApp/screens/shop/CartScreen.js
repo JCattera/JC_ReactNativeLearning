@@ -5,6 +5,8 @@ import Colors from '../../constants/Colors';
 import CartItem from '../../components/shop/CartItem';
 import * as cartActions from '../../store/actions/cart';
 import * as orderActions from '../../store/actions/order';
+import Card from '../../components/UI/Card';
+
 const CartScreen = (props) => {
   const totalCartAmount = useSelector((state) => state.cart.totalCartAmount);
   const cartItems = useSelector((state) => {
@@ -38,10 +40,12 @@ const CartScreen = (props) => {
   };
   return (
     <View style={styles.screen}>
-      <View style={styles.summary}>
+      <Card style={styles.summary}>
         <Text style={styles.summaryText}>
-          Total:
-          <Text style={styles.amount}> ${totalCartAmount.toFixed(2)}</Text>
+          Total:{' '}
+          <Text style={styles.amount}>
+            ${Math.abs(totalCartAmount).toFixed(2)}
+          </Text>
         </Text>
         <Button
           color={Colors.primaryColor}
@@ -51,8 +55,7 @@ const CartScreen = (props) => {
           }}
           disabled={cartItems.length === 0}
         />
-      </View>
-
+      </Card>
       <FlatList
         data={cartItems}
         keyExtractor={(item) => item.id}
@@ -74,13 +77,6 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     marginBottom: 20,
     padding: 10,
-    shadowColor: 'black',
-    shadowOffset: { height: 2, width: 0 },
-    shadowRadius: 6,
-    shadowOpacity: 0.26,
-    backgroundColor: 'white',
-    elevation: 5,
-    borderRadius: 10,
   },
   summaryText: {
     fontFamily: 'open-sans-bold',

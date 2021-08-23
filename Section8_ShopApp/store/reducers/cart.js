@@ -3,6 +3,7 @@ import {
   CLEAR_CART_ITEM,
   CHANGE_CART_ITEM_QUANTITY,
 } from '../actions/cart';
+import { DELETE_PRODUCT } from '../actions/products';
 import CartItem from '../../models/cart-item';
 import { ADD_ORDER } from '../actions/order';
 const initialState = {
@@ -11,6 +12,16 @@ const initialState = {
 };
 
 export default (state = initialState, action) => {
+  const deleteHandler = (state, action) => {
+    const currentCartItems = { ...state.cartItems };
+    const priceSubtracted = currentCartItems[action.itemId].sumTotal;
+    delete currentCartItems[action.itemId];
+    return {
+      ...state,
+      cartItems: currentCartItems,
+      totalCartAmount: state.totalCartAmount - priceSubtracted,
+    };
+  };
   switch (action.type) {
     case ADD_TO_CART:
       const addedProduct = action.addedProduct;
@@ -34,14 +45,12 @@ export default (state = initialState, action) => {
       };
 
     case CLEAR_CART_ITEM:
-      const currentCartItems = { ...state.cartItems };
-      const priceSubtracted = currentCartItems[action.itemId].sumTotal;
-      delete currentCartItems[action.itemId];
-      return {
-        ...state,
-        cartItems: currentCartItems,
-        totalCartAmount: state.totalCartAmount - priceSubtracted,
-      };
+      return deleteHandler(state, action);
+    case DELETE_PRODUCT:
+      if (!state.cartItems[action.itemId]) {
+        return state;
+      }
+      return deleteHandler(state, action);
     case ADD_ORDER:
       return initialState;
     case CHANGE_CART_ITEM_QUANTITY:

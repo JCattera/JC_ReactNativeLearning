@@ -53,7 +53,7 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 18,
-    marginVertical: 4,
+    marginVertical: 2,
     fontFamily: 'open-sans-bold',
   },
   price: {
@@ -69,7 +69,7 @@ const styles = StyleSheet.create({
   },
   productInfo: {
     alignItems: 'center',
-    height: '15%',
+    height: '17%',
     padding: 10,
   },
   imageContainer: {

@@ -12,6 +12,7 @@ import { HeaderButtons, Item } from 'react-navigation-header-buttons';
 import HeaderButton from '../../components/UI/HeaderButton';
 import { useSelector, useDispatch } from 'react-redux';
 import * as productsActions from '../../store/actions/products';
+import Input from '../../components/UI/Input';
 
 const FORM_UPDATE = 'FORM_UPDATE';
 const formReducer = (state, action) => {
@@ -90,36 +91,71 @@ const EditProductScreen = (props) => {
     props.navigation.setParams({ submit: submitProduct });
   }, [submitProduct]);
 
-  const textChangeHandler = (textField, text) => {
-    let isValid = false;
-    if (text.trim().length > 0) {
-      isValid = true;
-    }
-    dispatchFormState({
-      type: FORM_UPDATE,
-      value: text,
-      isValid: isValid,
-      field: textField,
-    });
-  };
+  const inputChangeHandler = useCallback(
+    (inputIdentifier, inputValue, inputValidity) => {
+      dispatchFormState({
+        type: FORM_UPDATE,
+        value: inputValue,
+        isValid: inputValidity,
+        field: inputIdentifier,
+      });
+    },
+    [dispatchFormState]
+  );
   return (
     <ScrollView>
       <View style={styles.form}>
-        <View style={styles.formControl}>
-          <Text style={styles.label}>Title</Text>
-          <TextInput
-            style={styles.input}
-            value={formState.inputValues.title}
-            onChangeText={textChangeHandler.bind(this, 'title')}
-            keyboardType="default"
-            autoCapitalize="sentences"
-            returnKeyType="next"
-            onSubmitEditing={() => {}}
-          />
-          {!formState.inputValidities.title && (
-            <Text style={styles.warning}>Title is not valid.</Text>
-          )}
-        </View>
+        <Input
+          id='title'
+          label="Title"
+          errorText="Title is not valid."
+          keyboardType="default"
+          autoCapitalize="sentences"
+          returnKeyType="next"
+          onInputChange={inputChangeHandler}
+          initialValue={editedProduct ? editedProduct.title : ''}
+          initialValidity={!!editedProduct}
+          required
+        />
+        <Input
+          id='imageUrl'
+          label="Image URL"
+          errorText="Image URL is not valid."
+          returnKeyType="next"
+          onInputChange={inputChangeHandler}
+          initialValue={editedProduct ? editedProduct.title : ''}
+          initialValidity={!!editedProduct}
+          required
+        />
+        {!editedProduct && (
+        <Input
+          id='price'
+          label="Price"
+          errorText="Price is not valid."
+          keyboardType="decimal-pad"
+          returnKeyType="next"
+          onInputChange={inputChangeHandler}
+          initialValue={''}
+          initialValidity={}
+          required
+          min={0.1}
+        />
+        )
+}
+        <Input
+          id='description'
+          label="Description"
+          errorText="Description is not valid."
+          autoCapitalize="sentences"
+          multiline
+          numberOfLines={3}
+          returnKeyType="done"
+          onInputChange={inputChangeHandler}
+          initialValue={''}
+          initialValidity={!!editedProduct}
+          required
+          minLength={5}
+        />
         <View style={styles.formControl}>
           <Text style={styles.label}>Image URL</Text>
           <TextInput

@@ -29,7 +29,7 @@ const Input = (props) => {
     touched: false,
   });
 
-  const { onInputChange } = props;
+  const { onInputChange, id } = props;
   useEffect(() => {
     if (inputState.touched) {
       onInputChange(id, inputState.value, inputState.isValid);
@@ -75,8 +75,10 @@ const Input = (props) => {
         onChangeText={textChangeHandler}
         onBlur={lostFocusHandler}
       />
-      {!inputState.isValid && (
-        <Text style={styles.warning}>{props.errorText}</Text>
+      {!inputState.isValid && inputState.touched && (
+        <View style={styles.errorContainer}>
+          <Text style={styles.warning}>{props.errorText}</Text>
+        </View>
       )}
     </View>
   );
@@ -98,6 +100,11 @@ const styles = StyleSheet.create({
   },
   warning: {
     color: 'red',
+    fontFamily: 'open-sans',
+    fontSize: 13,
+  },
+  errorContainer: {
+    marginVertical: 5,
   },
 });
 

@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "Section8_ShopApp",
-    "slug": "Section8_ShopApp",
+    "name": "Shop App",
+    "slug": "shop-app",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",

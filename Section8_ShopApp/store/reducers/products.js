@@ -4,6 +4,7 @@ import {
   CREATE_PRODUCT,
   DELETE_PRODUCT,
   UPDATE_PRODUCT,
+  SET_PRODUCTS,
 } from '../actions/products';
 const initialState = {
   availableProducts: PRODUCTS,
@@ -25,6 +26,13 @@ const productsReducer = (state = initialState, action) => {
         ...state,
         availableProducts: state.availableProducts.concat(newProduct),
         userProducts: state.userProducts.concat(newProduct),
+      };
+    case SET_PRODUCTS:
+      return {
+        availableProducts: action.products,
+        userProducts: action.products.filter(
+          (product) => product.ownerId === 'u1'
+        ),
       };
     case UPDATE_PRODUCT:
       const productIndex = state.userProducts.findIndex(

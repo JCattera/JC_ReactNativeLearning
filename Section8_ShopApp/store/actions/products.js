@@ -6,23 +6,30 @@ export const SET_PRODUCTS = 'SET_PRODUCTS';
 
 export const fetchProducts = () => {
   return async (dispatch) => {
-    const response = await fetch(
-      'https://rn-complete-guide-f0816-default-rtdb.firebaseio.com/products.json'
-    );
-    const resData = await response.json();
-    const loadedProducts = Object.entries(resData).map(
-      (x) =>
-        new Product(
-          x[0],
-          'u1',
-          x[1].title,
-          x[1].imageUrl,
-          x[1].description,
-          x[1].price
-        )
-    );
+    try {
+      const response = await fetch(
+        'https://rn-complete-guide-f0816-default-rtdb.firebaseio.com/products.json'
+      );
+      if (!response.ok) {
+        throw new Error('Something bad happened!');
+      }
+      const resData = await response.json();
+      const loadedProducts = Object.entries(resData).map(
+        (x) =>
+          new Product(
+            x[0],
+            'u1',
+            x[1].title,
+            x[1].imageUrl,
+            x[1].description,
+            x[1].price
+          )
+      );
 
-    dispatch({ type: SET_PRODUCTS, products: loadedProducts });
+      dispatch({ type: SET_PRODUCTS, products: loadedProducts });
+    } catch (err) {
+      throw err;
+    }
   };
 };
 export const deleteProduct = (productId) => {

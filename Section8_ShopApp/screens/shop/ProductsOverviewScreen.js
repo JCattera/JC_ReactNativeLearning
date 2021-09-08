@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import {
   Platform,
   FlatList,
@@ -19,19 +19,34 @@ import Colors from '../../constants/Colors';
 
 const ProductsOverviewScreen = (props) => {
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState();
   const availableProducts = useSelector(
     (state) => state.products.availableProducts
   );
   const dispatch = useDispatch();
-
-  useEffect(() => {
-    const loadProducts = () => {
-      setIsLoading(true);
+  const loadProducts = useCallback(() => {
+    setIsLoading(true);
+    setError(null);
+    try {
       dispatch(productsActions.fetchProducts());
-      setIsLoading(false);
+    } catch (err) {
+      setError(err.message);
+    }
+    setIsLoading(false);
+  }, [dispatch, setIsLoading, setError]);
+  useEffect(() => {
+    const willFocusSub = props.navigation.addListener(
+      'willFocus',
+      loadProducts
+    );
+
+    return () => {
+      willFocusSub.remove();
     };
+  }, [loadProducts]);
+  useEffect(() => {
     loadProducts();
-  }, [dispatch]);
+  }, [dispatch, loadProducts]);
   const selectItemHandler = (id, title) => {
     props.navigation.navigate({
       routeName: 'ProductDetails',
@@ -68,17 +83,29 @@ const ProductsOverviewScreen = (props) => {
       </ProductItem>
     );
   };
+  if (error) {
+    return (
+      <View style={styles.centered}>
+        <Text>An error occurred!</Text>
+        <Button
+          title="Reload"
+          onPress={loadProducts}
+          color={Colors.primaryColor}
+        />
+      </View>
+    );
+  }
 
   if (isLoading) {
     return (
-      <View>
+      <View style={styles.centered}>
         <ActivityIndicator size="large" color={Colors.primaryColor} />
       </View>
     );
   }
   if (!isLoading && availableProducts.length == 0) {
     return (
-      <View>
+      <View style={styles.centered}>
         <Text>No products found. Add some!</Text>
       </View>
     );

@@ -1,12 +1,15 @@
-import React, { useCallback, useEffect, useReducer } from 'react';
+import React, { useCallback, useEffect, useReducer, useState } from 'react';
 import {
+  Text,
   View,
   StyleSheet,
   ScrollView,
   KeyboardAvoidingView,
   Platform,
   Alert,
+  ActivityIndicator,
 } from 'react-native';
+import Colors from '../../constants/Colors';
 import { HeaderButtons, Item } from 'react-navigation-header-buttons';
 import HeaderButton from '../../components/UI/HeaderButton';
 import { useSelector, useDispatch } from 'react-redux';
@@ -38,6 +41,9 @@ const formReducer = (state, action) => {
 };
 
 const EditProductScreen = (props) => {
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState();
+
   const pId = props.navigation.getParam('productId');
   const editedProduct = useSelector((state) =>
     state.products.userProducts.find((product) => product.id === pId)
@@ -59,7 +65,12 @@ const EditProductScreen = (props) => {
     formIsValid: editedProduct ? true : false,
   });
 
-  const submitProduct = useCallback(() => {
+  useEffect(() => {
+    if (error) {
+      Alert.alert('An error occurred!', error, [{ text: 'OK' }]);
+    }
+  }, [error]);
+  const submitProduct = useCallback(async () => {
     if (!formState.formIsValid) {
       Alert.alert(
         'Invalid data',
@@ -68,16 +79,20 @@ const EditProductScreen = (props) => {
       );
       return;
     }
-    editedProduct
-      ? dispatch(
+    setError(null);
+    setIsLoading(true);
+    try {
+      if (editedProduct) {
+        await dispatch(
           productsActions.updateProduct(
             pId,
             formState.inputValues.title,
             formState.inputValues.description,
             formState.inputValues.imageUrl
           )
-        )
-      : dispatch(
+        );
+      } else {
+        await dispatch(
           productsActions.createProduct(
             formState.inputValues.title,
             formState.inputValues.description,
@@ -85,7 +100,12 @@ const EditProductScreen = (props) => {
             +formState.inputValues.price
           )
         );
-    props.navigation.goBack();
+      }
+      props.navigation.goBack();
+    } catch (error) {
+      setError(error.message);
+    }
+    setIsLoading(false);
   }, [dispatch, pId, formState]);
 
   useEffect(() => {
@@ -103,6 +123,13 @@ const EditProductScreen = (props) => {
     },
     [dispatchFormState]
   );
+  if (isLoading) {
+    return (
+      <View style={styles.centered}>
+        <ActivityIndicator size="large" color={Colors.primaryColor} />
+      </View>
+    );
+  }
   return (
     <KeyboardAvoidingView
       style={{ flex: 1 }}
@@ -191,6 +218,7 @@ const styles = StyleSheet.create({
   form: {
     margin: 20,
   },
+  centered: { flex: 1, justifyContent: 'center', alignItems: 'center' },
 });
 
 export default EditProductScreen;

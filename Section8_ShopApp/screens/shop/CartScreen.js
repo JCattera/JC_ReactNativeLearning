@@ -38,6 +38,10 @@ const CartScreen = (props) => {
       />
     );
   };
+  const sendOrderHandler = () => {
+    dispatch(orderActions.addOrder(cartItems, totalCartAmount));
+  };
+
   return (
     <View style={styles.screen}>
       <Card style={styles.summary}>
@@ -50,9 +54,7 @@ const CartScreen = (props) => {
         <Button
           color={Colors.primaryColor}
           title="Place Order"
-          onPress={() => {
-            dispatch(orderActions.addOrder(cartItems, totalCartAmount));
-          }}
+          onPress={sendOrderHandler}
           disabled={cartItems.length === 0}
         />
       </Card>

@@ -1,5 +1,7 @@
 export const ADD_ORDER = 'ADD_ORDER';
-export const GET_ORDERS = 'GET_ORDERS';
+export const SET_ORDERS = 'SET_ORDERS';
+import Order from '../../models/order';
+
 export const addOrder = (cartItems, totalCartAmount) => {
   return async (dispatch) => {
     const date = new Date();
@@ -36,15 +38,29 @@ export const addOrder = (cartItems, totalCartAmount) => {
     }
   };
 };
-// export const fetchOrders = () => {
-//   return async (dispatch) => {
-//     const response = await fetch(
-//       'https://rn-complete-guide-f0816-default-rtdb.firebaseio.com/orders.json'
-//     );
-//     if (!response.ok) {
-//       throw new Error('Something bad happened!');
-//     }
-//     const resData = await response.json();
-//     const loadedOrders = Object.entries(resData).map()
-//   }
-// }
+export const fetchOrders = () => {
+  return async (dispatch) => {
+    try {
+      const response = await fetch(
+        'https://rn-complete-guide-f0816-default-rtdb.firebaseio.com/orders.json'
+      );
+      if (!response.ok) {
+        throw new Error('Something bad happened!');
+      }
+      const resData = await response.json();
+      const loadedOrders = Object.entries(resData).map(
+        (x) =>
+          new Order(
+            x[0],
+            x[1].cartItems,
+            x[1].totalCartAmount,
+            new Date(x[1].date)
+          )
+      );
+
+      dispatch({ type: SET_ORDERS, orders: loadedOrders });
+    } catch (err) {
+      throw err;
+    }
+  };
+};

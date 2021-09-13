@@ -42,7 +42,7 @@ export const fetchOrders = () => {
   return async (dispatch) => {
     try {
       const response = await fetch(
-        'https://rn-complete-guide-f0816-default-rtdb.firebaseio.com/orders.json'
+        'https://rn-complete-guide-f0816-default-rtdb.firebaseio.com/orders/u1.json'
       );
       if (!response.ok) {
         throw new Error('Something bad happened!');

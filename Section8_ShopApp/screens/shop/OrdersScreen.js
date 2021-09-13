@@ -16,37 +16,44 @@ import Colors from '../../constants/Colors';
 
 const OrdersScreen = (props) => {
   const [isLoading, setIsLoading] = useState(false);
-  // const [error, setError] = useState();
+  const [error, setError] = useState();
   const orders = useSelector((state) => state.orders.orders);
   const dispatch = useDispatch();
-  // const loadOrders = useCallback(() => {
-  //   setIsLoading(true);
-  //   setError(null);
-  //   try {
-  //     dispatch(ordersActions.fetchOrders());
-  //   } catch (err) {
-  //     setError(err.message);
-  //   }
-  //   setIsLoading(false);
-  // }, [dispatch, setIsLoading, setError]);
+  const loadOrders = useCallback(async () => {
+    setIsLoading(true);
+    setError(null);
+    try {
+      dispatch(ordersActions.fetchOrders());
+    } catch (err) {
+      setError(err.message);
+    }
+    setIsLoading(false);
+  }, [dispatch, setIsLoading, setError]);
+
+  // useEffect(() => {
+  //   const willFocusSub = props.navigation.addListener('willFocus', loadOrders);
+
+  //   return () => {
+  //     willFocusSub.remove();
+  //   };
+  // }, [loadOrders]);
 
   useEffect(() => {
-    setIsLoading(true);
-    dispatch(ordersActions.fetchOrders()).then(setIsLoading(false));
-  }, [dispatch]);
+    loadOrders();
+  }, [dispatch, loadOrders]);
 
-  // if (error) {
-  //   return (
-  //     <View style={styles.centered}>
-  //       <Text>An error occurred!</Text>
-  //       <Button
-  //         title="Reload"
-  //         onPress={loadOrders}
-  //         color={Colors.primaryColor}
-  //       />
-  //     </View>
-  //   );
-  // }
+  if (error) {
+    return (
+      <View style={styles.centered}>
+        <Text>An error occurred!</Text>
+        <Button
+          title="Reload"
+          onPress={loadOrders}
+          color={Colors.primaryColor}
+        />
+      </View>
+    );
+  }
 
   if (isLoading) {
     return (
